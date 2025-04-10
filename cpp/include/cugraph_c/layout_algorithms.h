@@ -62,6 +62,11 @@ typedef struct {
  *                               Makes clusters more tight.
  * @param [in]   prevent_overlapping
  *                               Prevent nodes to overlap.
+ * @param [in]   vertex_radius
+ *                               Radius of each vertex, used when prevent_overlapping is set.
+ * @param [in]   overlap_scaling_ratio
+ *                               When overlap_scaling_ratio is set, scales the repulsion force
+ * between two nodes that are overlapping.
  * @param [in]   edge_weight_influence
  *                               How much influence you give to the edges weight.
  *                               0 is “no influence” and 1 is “normal”.
