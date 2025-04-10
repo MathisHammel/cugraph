@@ -28,6 +28,9 @@ __global__ static void repulsion_kernel(const float* restrict x_pos,
                                         float* restrict repel_y,
                                         const int* restrict mass,
                                         const float scaling_ratio,
+                                        bool prevent_overlapping,
+                                        const float* restrict vertex_radius,
+                                        const float overlap_scaling_ratio,
                                         const vertex_t n)
 {
   int i = (blockIdx.y * blockDim.y) + threadIdx.y;  // for every row
@@ -55,6 +58,9 @@ void apply_repulsion(const float* restrict x_pos,
                      float* restrict repel_y,
                      const int* restrict mass,
                      const float scaling_ratio,
+                     bool prevent_overlapping,
+                     const float* restrict vertex_radius,
+                     const float overlap_scaling_ratio,
                      const vertex_t n,
                      cudaStream_t stream)
 {
@@ -63,7 +69,16 @@ void apply_repulsion(const float* restrict x_pos,
                min((n + nthreads.y - 1) / nthreads.y, CUDA_MAX_BLOCKS_2D));
 
   repulsion_kernel<vertex_t>
-    <<<nblocks, nthreads, 0, stream>>>(x_pos, y_pos, repel_x, repel_y, mass, scaling_ratio, n);
+    <<<nblocks, nthreads, 0, stream>>>(x_pos,
+                                       y_pos,
+                                       repel_x,
+                                       repel_y,
+                                       mass,
+                                       scaling_ratio,
+                                       prevent_overlapping,
+                                       vertex_radius,
+                                       overlap_scaling_ratio,
+                                       n);
   RAFT_CHECK_CUDA(stream);
 }
 
