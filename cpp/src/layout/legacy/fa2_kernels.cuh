@@ -59,8 +59,8 @@ __global__ static void attraction_kernel(const vertex_t* restrict row,
     float factor = -coef * weight;
 
     if (prevent_overlapping) {
-      float radius_src = node_radius[src];
-      float radius_dst = node_radius[dst];
+      float radius_src = vertex_radius[src];
+      float radius_dst = vertex_radius[dst];
       float distance_sq = x_dist * x_dist + y_dist * y_dist;
       if (distance_sq <= pow(radius_src + radius_dst, 2)) {
         // Overlapping, force is 0
