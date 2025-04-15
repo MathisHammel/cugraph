@@ -33,11 +33,9 @@ __global__ static void repulsion_kernel(const float* restrict x_pos,
                                         const float overlap_scaling_ratio,
                                         const vertex_t n)
 {
-  int j = (blockIdx.x * blockDim.x) + threadIdx.x;  // for every item in row
   int i = (blockIdx.y * blockDim.y) + threadIdx.y;  // for every row
   for (; i < n; i += gridDim.y * blockDim.y) {
-    for (; j < n; j += gridDim.x * blockDim.x) {
-      if (j >= i) return;
+    for (; j < i; j += gridDim.x * blockDim.x) {
       float factor;
       float x_dist      = x_pos[i] - x_pos[j];
       float y_dist      = y_pos[i] - y_pos[j];
