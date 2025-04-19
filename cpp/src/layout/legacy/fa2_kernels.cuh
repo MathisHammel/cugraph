@@ -67,12 +67,10 @@ __global__ static void attraction_kernel(const vertex_t* restrict row,
         continue;
       } else {
         // Not overlapping, force is based on d' instead of d
-
         float distance = pow(x_dist, 2) + pow(y_dist, 2);
         distance += FLT_EPSILON;
         distance = sqrt(distance);
         float distance_inter = distance - radius_src - radius_dst;
-
         if (lin_log_mode) {
           factor *= log(1 + distance_inter) / distance;
         } else {
